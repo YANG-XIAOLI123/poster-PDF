@@ -1,51 +1,59 @@
-const testo = "WTF";
-const fontSize = 120;
-const parti = 40;
-const sfasamento = 4;
-
-//
-
-/** @type {Font} */
 let font;
+let g;
+let formes = [];
+let numformes = 20;
 
 function preload() {
-  font = loadFont("./fonts/Adobe-Jenson-Pro-Bold-Caption.ttf");
+  font = loadFont("./fonts/BUTTERSANS-REGULAR.OTF");
 }
 
 function setup() {
-  createCanvas(400, 400, "svg");
+  createCanvas(595, 842,"svg"); 
   addDownloadButton();
 
-  rectMode(CENTER);
-  angleMode(DEGREES);
+ g = createGraphics(200,200);
 
-  noLoop(); // Opzionale
+  
+  
+  g.background("black");
+  g.textFont(font);
+  g.textAlign(CENTER, CENTER);
+g.textSize(60);
+  g.fill("DeepPink");
+  
+  g.text("KUN", g.width / 2, g.height / 2);
+
+  for (let i = 0; i < numformes; i++) {
+    formes.push({
+      x: random(width),
+      y: random(height),
+      size: random(100, 250),
+      angle: random(TWO_PI),
+      velocità: random(0.01, 0.03),
+    });
+  }
 }
 
 function draw() {
-  clear(); // Non cancellare!
+  background("MediumOrchid");
 
-  textFont(font);
-  textLeading(fontSize);
-  textSize(fontSize);
-
-  const text_width = textWidth(testo);
-  const h_parti = fontSize / parti;
-
-  noStroke();
-  fill(0);
-
-  for (let i = 0; i < parti; i++) {
+  for (let forme of formes) {
     push();
-    translate(text_width / 2, 0);
-    translate(random(-sfasamento, sfasamento), 0);
-
-    beginClip();
-    rect(0, i * h_parti + h_parti / 2, text_width, h_parti);
-    endClip();
-
-    textSVG(testo, -text_width / 2, fontSize);
-
+    translate(forme.x, forme.y);
+    rotate(forme.angle);
+    forme.angle += forme.velocità;
+    imageMode(CENTER);
+    image(g, 0, 0, forme.size, forme.size);
     pop();
   }
+
+  textFont(font);
+  textSize(300);
+  textAlign(CENTER, CENTER);
+  let x =width / 2;
+  let y = height / 2;
+
+
+  fill("WHITE");
+  text("LILI", x, y);
 }
